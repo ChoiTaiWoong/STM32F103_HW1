@@ -101,15 +101,44 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   uint8_t index = 0;
   uint8_t pattern = 1;
+  uint8_t pattern_flg = 0;
+
   while (1)
   {
-	  pattern = 1 << index;
-	  index = (index + 1) % 8;
-	  HAL_Delay(300);
-	  ByteDataWrite(~pattern);
-
-
-
+	  if (pattern_flg == 0)
+	  {
+		  if(pattern == 0b00000000)
+		  		  {
+		  			  pattern = 0b00000001;
+		  		  }
+		  		  else
+		  		  {
+		  			  HAL_Delay(300);
+		  			  ByteDataWrite(~pattern);
+		  			  pattern <<= 1;
+		  		  }
+	  }
+	  else if (pattern_flg == 1)
+	  	  {
+	  		  if(pattern == 0b00000000)
+	  		  {
+	  			  pattern = 0b10000000;
+	  		  }
+	  		  else
+	  		  {
+	  			  HAL_Delay(300);
+	  			  ByteDataWrite(~pattern);
+	  			  pattern >>= 1;
+	  		  }
+	  	  }
+	  if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == 0)
+	  {
+		  pattern_flg = 0;
+	  }
+	  else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == 0)
+	  {
+		  pattern_flg = 1;
+	  }
 
   /* USER CODE END WHILE */
 
