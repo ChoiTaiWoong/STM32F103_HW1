@@ -100,13 +100,16 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint8_t index = 0;
+  uint8_t pattern = 1;
   while (1)
   {
-	  uint8_t pattern = 1 << index;
+	  pattern = 1 << index;
 	  index = (index + 1) % 8;
-
-	  ByteDataWrite(pattern);
 	  HAL_Delay(300);
+	  ByteDataWrite(~pattern);
+
+
+
 
   /* USER CODE END WHILE */
 
